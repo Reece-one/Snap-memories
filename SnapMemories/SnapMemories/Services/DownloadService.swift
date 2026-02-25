@@ -146,4 +146,24 @@ class DownloadService {
     func cleanupTemporaryFile(_ url: URL) {
         try? FileManager.default.removeItem(at: url)
     }
+
+    /// Check if download URLs have expired by inspecting the `ts` query parameter
+    /// - Parameter memories: Array of memories to check
+    /// - Returns: `true` if URLs appear expired, `false` otherwise
+    func checkUrlExpiration(_ memories: [Memory]) -> Bool {
+        let sampled = memories.prefix(5)
+        let now = Date().timeIntervalSince1970
+
+        for memory in sampled {
+            guard let components = URLComponents(string: memory.mediaDownloadUrl),
+                  let tsValue = components.queryItems?.first(where: { $0.name == "ts" })?.value,
+                  let ts = Double(tsValue) else {
+                continue
+            }
+            if ts < now {
+                return true
+            }
+        }
+        return false
+    }
 }

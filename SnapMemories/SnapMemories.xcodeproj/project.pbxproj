@@ -7,19 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		001 /* SnapMemoriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101; };
-		002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102; };
-		003 /* Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103; };
-		004 /* ZipService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104; };
-		005 /* DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105; };
-		006 /* PhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106; };
-		007 /* DuplicateDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107; };
-		008 /* PurchaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108; };
-		009 /* ImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109; };
-		010 /* MemorySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110; };
-		011 /* DownloadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111; };
-		012 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112; };
-		013 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 113; };
+		001 /* SnapMemoriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101 /* SnapMemoriesApp.swift */; };
+		002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102 /* ContentView.swift */; };
+		003 /* Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103 /* Memory.swift */; };
+		004 /* ZipService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 104 /* ZipService.swift */; };
+		005 /* DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105 /* DownloadService.swift */; };
+		006 /* PhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106 /* PhotosService.swift */; };
+		007 /* DuplicateDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107 /* DuplicateDetector.swift */; };
+		008 /* PurchaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108 /* PurchaseService.swift */; };
+		009 /* ImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109 /* ImportViewModel.swift */; };
+		010 /* MemorySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110 /* MemorySelectionView.swift */; };
+		011 /* DownloadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111 /* DownloadProgressView.swift */; };
+		012 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112 /* PaywallView.swift */; };
+		013 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 113 /* Assets.xcassets */; };
+		014 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 600 /* ZIPFoundation */; };
+		015 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 601 /* RevenueCat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,12 +39,26 @@
 		111 /* DownloadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadProgressView.swift; sourceTree = "<group>"; };
 		112 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		113 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C0865B7D2F4EEDC200D226A9 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = Products.storekit; path = SnapMemories/Products.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		303 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				014 /* ZIPFoundation in Frameworks */,
+				015 /* RevenueCat in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		200 = {
 			isa = PBXGroup;
 			children = (
+				C0865B7D2F4EEDC200D226A9 /* Products.storekit */,
 				201 /* SnapMemories */,
 				202 /* Products */,
 			);
@@ -113,9 +129,10 @@
 /* Begin PBXNativeTarget section */
 		300 /* SnapMemories */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 400;
+			buildConfigurationList = 400 /* Build configuration list for PBXNativeTarget "SnapMemories" */;
 			buildPhases = (
 				301 /* Sources */,
+				303 /* Frameworks */,
 				302 /* Resources */,
 			);
 			buildRules = (
@@ -146,7 +163,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 501;
+			buildConfigurationList = 501 /* Build configuration list for PBXProject "SnapMemories" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -156,8 +173,8 @@
 			);
 			mainGroup = 200;
 			packageReferences = (
-				700 /* ZIPFoundation */,
-				701 /* RevenueCat */,
+				700 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				701 /* XCRemoteSwiftPackageReference "purchases-ios" */,
 			);
 			productRefGroup = 202 /* Products */;
 			projectDirPath = "";
@@ -377,7 +394,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		400 = {
+		400 /* Build configuration list for PBXNativeTarget "SnapMemories" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				401 /* Debug */,
@@ -386,7 +403,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		501 = {
+		501 /* Build configuration list for PBXProject "SnapMemories" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				502 /* Debug */,
@@ -398,7 +415,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		700 /* ZIPFoundation */ = {
+		700 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
 			requirement = {
@@ -406,7 +423,7 @@
 				minimumVersion = 0.9.0;
 			};
 		};
-		701 /* RevenueCat */ = {
+		701 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RevenueCat/purchases-ios.git";
 			requirement = {
@@ -419,12 +436,12 @@
 /* Begin XCSwiftPackageProductDependency section */
 		600 /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 700 /* ZIPFoundation */;
+			package = 700 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
 		};
 		601 /* RevenueCat */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 701 /* RevenueCat */;
+			package = 701 /* XCRemoteSwiftPackageReference "purchases-ios" */;
 			productName = RevenueCat;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -14,7 +14,7 @@ struct MemorySelectionView: View {
         return viewModel.memories.filter { $0.displayDate.localizedCaseInsensitiveContains(searchText) }
     }
     
-    private var duplicateDetector = DuplicateDetector.shared
+    private var duplicateDetector: DuplicateDetector { DuplicateDetector.shared }
     
     var body: some View {
         VStack(spacing: 0) {

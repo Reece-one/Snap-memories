@@ -1,0 +1,30 @@
+{
+  "identifier" : "F7A1B2C3-D4E5-6789-ABCD-EF0123456789",
+  "type" : "com.apple.testing.storekit-configuration",
+  "version" : 3,
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "1",
+      "localizations" : [
+        {
+          "description" : "Download unlimited Snapchat memories forever",
+          "displayName" : "Unlimited Downloads",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.snapmemories.app.unlimited",
+      "referenceName" : "Unlimited Downloads (Lifetime)",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "1",
+    "_developerTeamID" : "",
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : []
+  }
+}

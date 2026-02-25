@@ -96,10 +96,17 @@ class ImportViewModel: ObservableObject {
             
             let jsonURL = try zipService.findMemoriesJSON(in: folder)
             memories = try zipService.parseMemoriesJSON(at: jsonURL)
-            
+
+            // Check if download URLs have expired
+            if downloadService.checkUrlExpiration(memories) {
+                state = .error("Your Snapchat download links have expired. Please request a new data export from Snapchat and try again.")
+                cleanup()
+                return
+            }
+
             // Pre-select all non-duplicate memories
             selectedIds = Set(memories.filter { !duplicateDetector.isDuplicate($0) }.map { $0.id })
-            
+
             state = .ready
             
         } catch {

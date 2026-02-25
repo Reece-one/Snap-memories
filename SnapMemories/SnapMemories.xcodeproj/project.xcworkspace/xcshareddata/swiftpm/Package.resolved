@@ -1,0 +1,24 @@
+{
+  "originHash" : "efc907b029c4f3ad57012b4c2bed078ed0844fbeba8afd5f280ecd2742198ab0",
+  "pins" : [
+    {
+      "identity" : "purchases-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RevenueCat/purchases-ios.git",
+      "state" : {
+        "revision" : "5f7fa0b5c3324ae763365c08e61f29692d18454b",
+        "version" : "4.44.2"
+      }
+    },
+    {
+      "identity" : "zipfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/weichsel/ZIPFoundation.git",
+      "state" : {
+        "revision" : "22787ffb59de99e5dc1fbfe80b19c97a904ad48d",
+        "version" : "0.9.20"
+      }
+    }
+  ],
+  "version" : 3
+}
