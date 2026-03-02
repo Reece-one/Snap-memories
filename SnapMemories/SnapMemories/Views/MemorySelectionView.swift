@@ -65,8 +65,8 @@ struct MemorySelectionView: View {
                 }
             }
             
-            // Free limit warning
-            if !purchaseService.hasUnlimitedAccess {
+            // Free limit warning — only show once user has used 50%+ of free downloads
+            if !purchaseService.hasUnlimitedAccess && purchaseService.remainingFreeDownloads <= PurchaseService.FREE_LIMIT / 2 {
                 HStack {
                     Image(systemName: "info.circle")
                     Text("\(purchaseService.remainingFreeDownloads) free downloads remaining")

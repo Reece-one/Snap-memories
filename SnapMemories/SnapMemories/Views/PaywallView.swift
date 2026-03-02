@@ -3,135 +3,170 @@ import RevenueCat
 
 struct PaywallView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var purchaseService: PurchaseService
-    
+
     @State private var isLoading = false
     @State private var errorMessage: String?
-    
+    @State private var appeared = false
+    @State private var ctaPulse = false
+
     var body: some View {
-        NavigationStack {
-            ZStack {
-                // Background
-                LinearGradient(
-                    colors: [.yellow.opacity(0.3), .orange.opacity(0.2)],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
+        ZStack {
+            // Clean background
+            (colorScheme == .dark ? Color(hex: "0F172A") : Color.white)
                 .ignoresSafeArea()
-                
-                ScrollView {
-                    VStack(spacing: 32) {
-                        // Header
-                        VStack(spacing: 16) {
-                            Image(systemName: "infinity")
-                                .font(.system(size: 60, weight: .bold))
-                                .foregroundStyle(.yellow)
-                            
-                            Text("Unlimited Downloads")
-                                .font(.largeTitle.weight(.bold))
-                            
-                            Text("You've reached the free limit of \(PurchaseService.FREE_LIMIT) downloads")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                                .multilineTextAlignment(.center)
-                        }
-                        .padding(.top, 40)
-                        
-                        // Features
-                        VStack(alignment: .leading, spacing: 16) {
-                            FeatureRow(icon: "infinity", text: "Unlimited memory downloads")
-                            FeatureRow(icon: "bolt.fill", text: "Download all at once")
-                            FeatureRow(icon: "clock.arrow.circlepath", text: "Import new exports anytime")
-                            FeatureRow(icon: "heart.fill", text: "Support indie development")
-                        }
-                        .padding()
-                        .background(.ultraThinMaterial)
-                        .cornerRadius(16)
-                        .padding(.horizontal)
-                        
-                        // Price and purchase button
-                        if let offering = purchaseService.currentOffering,
-                           let package = offering.lifetime ?? offering.availablePackages.first {
-                            VStack(spacing: 12) {
-                                Text("One-time purchase")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                
-                                Button {
-                                    Task {
-                                        await purchase(package: package)
-                                    }
-                                } label: {
-                                    HStack {
-                                        if isLoading {
-                                            ProgressView()
-                                                .tint(.black)
-                                        } else {
-                                            Text("Unlock for \(package.priceString)")
-                                        }
-                                    }
-                                    .font(.headline)
-                                    .foregroundColor(.black)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 18)
-                                    .background(Color.yellow)
-                                    .cornerRadius(14)
-                                }
-                                .disabled(isLoading)
-                                .padding(.horizontal)
+
+            VStack(spacing: 0) {
+                // Close button row
+                HStack {
+                    Spacer()
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+
+                Spacer()
+
+                // Hero area — top 30-35%
+                Image("PaywallImage")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 200)
+                    .padding(.horizontal, 20)
+
+                Spacer().frame(height: 24)
+
+                // Headline — 28-32pt, Bold, benefit-focused, loss-aversion
+                Text("Never Lose a Memory Again")
+                    .font(.system(size: 28, weight: .bold))
+                    .minimumScaleFactor(0.8)
+                    .lineLimit(1)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(colorScheme == .dark ? Color(hex: "F9FAFB") : Color(hex: "1F2937"))
+                    .padding(.horizontal, 20)
+
+                Spacer().frame(height: 24)
+
+                // 3 benefit bullets — outcome-first, loss-aversion framing
+                VStack(alignment: .leading, spacing: 16) {
+                    BenefitBullet(text: "Never hit your download limit again")
+                    BenefitBullet(text: "Save every memory before they expire")
+                    BenefitBullet(text: "One payment — no monthly bills, ever")
+                }
+                .padding(.horizontal, 32)
+
+                Spacer().frame(height: 24)
+
+                // Social proof strip
+                HStack(spacing: 4) {
+                    ForEach(0..<5, id: \.self) { _ in
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 14))
+                            .foregroundStyle(.yellow)
+                    }
+                    Text("Loved by Snapchat users")
+                        .font(.system(size: 14))
+                        .foregroundStyle(Color(hex: "6B7280"))
+                }
+
+                Spacer()
+
+                // Price + CTA section — always above fold
+                if let offering = purchaseService.currentOffering,
+                   let package = offering.lifetime ?? offering.availablePackages.first {
+                    VStack(spacing: 12) {
+                        // Price display — large, prominent
+                        Text(package.priceString)
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundStyle(colorScheme == .dark ? Color(hex: "F9FAFB") : Color(hex: "1F2937"))
+
+                        Text("One payment. Yours forever.")
+                            .font(.system(size: 14))
+                            .foregroundStyle(Color(hex: "6B7280"))
+
+                        Spacer().frame(height: 8)
+
+                        // CTA Button — full-width, high contrast, 56-72px tall
+                        Button {
+                            Task {
+                                await purchase(package: package)
                             }
-                        } else {
-                            ProgressView("Loading...")
-                                .onAppear {
-                                    Task {
-                                        await purchaseService.fetchOfferings()
-                                    }
+                        } label: {
+                            HStack {
+                                if isLoading {
+                                    ProgressView()
+                                        .tint(.black)
+                                } else {
+                                    Text("Unlock Lifetime Access")
+                                        .font(.system(size: 17, weight: .semibold))
                                 }
+                            }
+                            .foregroundColor(.black)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 60)
+                            .background(Color(hex: "EAB308"))
+                            .cornerRadius(14)
                         }
-                        
+                        .disabled(isLoading)
+                        .scaleEffect(ctaPulse ? 1.02 : 1.0)
+                        .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: ctaPulse)
+                        .padding(.horizontal, 20)
+
                         // Error message
                         if let error = errorMessage {
                             Text(error)
-                                .font(.caption)
+                                .font(.system(size: 13))
                                 .foregroundStyle(.red)
                                 .multilineTextAlignment(.center)
+                                .padding(.horizontal, 20)
                         }
-                        
-                        // Restore purchases
+
+                        // Restore purchases — secondary, low visual weight
                         Button {
                             Task {
                                 await restore()
                             }
                         } label: {
-                            Text("Restore Purchases")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
+                            Text("Restore Purchase")
+                                .font(.system(size: 14))
+                                .foregroundStyle(Color(hex: "6B7280"))
                         }
                         .disabled(isLoading)
-                        
-                        // Terms
+
+                        // Fine print / legal
                         VStack(spacing: 4) {
-                            Text("Payment will be charged to your Apple ID account")
                             Link("Terms of Service", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
                             Link("Privacy Policy", destination: URL(string: "https://www.apple.com/privacy/")!)
                         }
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
+                        .font(.system(size: 12))
+                        .foregroundStyle(Color(hex: "6B7280").opacity(0.7))
+                    }
+                    .padding(.bottom, 24)
+                } else {
+                    ProgressView("Loading...")
                         .padding(.bottom, 40)
-                    }
+                        .onAppear {
+                            Task {
+                                await purchaseService.fetchOfferings()
+                            }
+                        }
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundStyle(.secondary)
-                    }
-                }
+            .opacity(appeared ? 1 : 0)
+            .offset(y: appeared ? 0 : 20)
+        }
+        .onAppear {
+            withAnimation(.easeOut(duration: 0.3)) {
+                appeared = true
             }
+            ctaPulse = true
         }
         .onChange(of: purchaseService.hasUnlimitedAccess) { newValue in
             if newValue {
@@ -139,50 +174,74 @@ struct PaywallView: View {
             }
         }
     }
-    
+
     private func purchase(package: Package) async {
         isLoading = true
         errorMessage = nil
-        
+
         do {
             try await purchaseService.purchase(package: package)
         } catch {
             errorMessage = error.localizedDescription
         }
-        
+
         isLoading = false
     }
-    
+
     private func restore() async {
         isLoading = true
         errorMessage = nil
-        
+
         do {
             try await purchaseService.restorePurchases()
         } catch {
             errorMessage = error.localizedDescription
         }
-        
+
         isLoading = false
     }
 }
 
-struct FeatureRow: View {
-    let icon: String
+struct BenefitBullet: View {
     let text: String
-    
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
-        HStack(spacing: 16) {
-            Image(systemName: icon)
-                .font(.title3)
-                .foregroundStyle(.yellow)
-                .frame(width: 30)
-            
+        HStack(spacing: 12) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 20))
+                .foregroundStyle(Color(hex: "EAB308"))
+
             Text(text)
-                .font(.subheadline)
-            
-            Spacer()
+                .font(.system(size: 16))
+                .foregroundStyle(colorScheme == .dark ? Color(hex: "F9FAFB") : Color(hex: "1F2937"))
         }
+    }
+}
+
+// MARK: - Color Extension
+
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 6:
+            (a, r, g, b) = (255, (int >> 16) & 0xFF, (int >> 8) & 0xFF, int & 0xFF)
+        case 8:
+            (a, r, g, b) = ((int >> 24) & 0xFF, (int >> 16) & 0xFF, (int >> 8) & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (255, 0, 0, 0)
+        }
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue: Double(b) / 255,
+            opacity: Double(a) / 255
+        )
     }
 }
 
