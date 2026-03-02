@@ -153,6 +153,7 @@ class DownloadService {
     func checkUrlExpiration(_ memories: [Memory]) -> Bool {
         let sampled = memories.prefix(5)
         let now = Date().timeIntervalSince1970
+        var checkedAny = false
 
         for memory in sampled {
             guard let components = URLComponents(string: memory.mediaDownloadUrl),
@@ -160,10 +161,54 @@ class DownloadService {
                   let ts = Double(tsValue) else {
                 continue
             }
+            checkedAny = true
             if ts < now {
                 return true
             }
         }
+
+        // If no URLs had a parseable `ts` parameter, we can't determine
+        // expiration from the URL alone — fall back to a network probe
+        if !checkedAny {
+            return false // will be handled by async check
+        }
+
+        return false
+    }
+
+    /// Async expiration check: probes a download URL to verify it's still accessible
+    /// - Parameter memories: Array of memories to check
+    /// - Returns: `true` if URLs appear expired, `false` otherwise
+    func checkUrlExpirationAsync(_ memories: [Memory]) async -> Bool {
+        // First try the fast timestamp-based check
+        if checkUrlExpiration(memories) {
+            return true
+        }
+
+        // Fall back to probing a URL with a HEAD request
+        guard let firstMemory = memories.first,
+              let url = URL(string: firstMemory.mediaDownloadUrl) else {
+            return false
+        }
+
+        do {
+            var request = URLRequest(url: url)
+            request.httpMethod = "HEAD"
+            request.timeoutInterval = 10
+
+            let (_, response) = try await session.data(for: request)
+
+            if let httpResponse = response as? HTTPURLResponse {
+                // 403/410 typically mean expired links
+                if httpResponse.statusCode == 403 || httpResponse.statusCode == 410 {
+                    return true
+                }
+            }
+        } catch {
+            // Network error likely means the URL is no longer valid
+            return true
+        }
+
         return false
     }
 }

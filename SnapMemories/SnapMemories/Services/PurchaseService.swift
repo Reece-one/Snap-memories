@@ -57,18 +57,22 @@ class PurchaseService: ObservableObject {
     /// Fetch available offerings (products)
     func fetchOfferings() async {
         await MainActor.run { isLoading = true }
-        
+
         do {
             let offerings = try await Purchases.shared.offerings()
+            print("📦 All offerings: \(offerings.all.keys)")
+            print("📦 Current offering: \(String(describing: offerings.current))")
+            print("📦 Current packages: \(offerings.current?.availablePackages.map { $0.identifier } ?? [])")
             await MainActor.run {
                 self.currentOffering = offerings.current
             }
         } catch {
+            print("❌ Offerings error: \(error)")
             await MainActor.run {
                 errorMessage = "Failed to fetch products: \(error.localizedDescription)"
             }
         }
-        
+
         await MainActor.run { isLoading = false }
     }
     

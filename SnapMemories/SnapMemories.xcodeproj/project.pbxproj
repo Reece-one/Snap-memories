@@ -21,7 +21,10 @@
 		012 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112 /* PaywallView.swift */; };
 		013 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 113 /* Assets.xcassets */; };
 		014 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 600 /* ZIPFoundation */; };
-		015 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 601 /* RevenueCat */; };
+		C0865B802F4F107700D226A9 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0865B7F2F4F107700D226A9 /* Secrets.plist */; };
+		C0865B832F4F129200D226A9 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = C0865B822F4F129200D226A9 /* RevenueCat */; };
+		C0ED06352F50FA40003B568E /* Untitled.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ED06342F50FA37003B568E /* Untitled.swift */; };
+		C0ED06372F50FA93003B568E /* Products2.storekit in Resources */ = {isa = PBXBuildFile; fileRef = C0ED06362F50FA93003B568E /* Products2.storekit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +43,9 @@
 		112 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		113 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0865B7D2F4EEDC200D226A9 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = Products.storekit; path = SnapMemories/Products.storekit; sourceTree = "<group>"; };
+		C0865B7F2F4F107700D226A9 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
+		C0ED06342F50FA37003B568E /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
+		C0ED06362F50FA93003B568E /* Products2.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products2.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,8 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0865B832F4F129200D226A9 /* RevenueCat in Frameworks */,
 				014 /* ZIPFoundation in Frameworks */,
-				015 /* RevenueCat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,8 +64,11 @@
 		200 = {
 			isa = PBXGroup;
 			children = (
+				C0ED06362F50FA93003B568E /* Products2.storekit */,
+				C0865B7F2F4F107700D226A9 /* Secrets.plist */,
 				C0865B7D2F4EEDC200D226A9 /* Products.storekit */,
 				201 /* SnapMemories */,
+				C0865B812F4F129200D226A9 /* Frameworks */,
 				202 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -68,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				101 /* SnapMemoriesApp.swift */,
+				C0ED06342F50FA37003B568E /* Untitled.swift */,
 				102 /* ContentView.swift */,
 				203 /* Models */,
 				204 /* Services */,
@@ -124,6 +134,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		C0865B812F4F129200D226A9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -142,7 +159,7 @@
 			name = SnapMemories;
 			packageProductDependencies = (
 				600 /* ZIPFoundation */,
-				601 /* RevenueCat */,
+				C0865B822F4F129200D226A9 /* RevenueCat */,
 			);
 			productName = SnapMemories;
 			productReference = 100 /* SnapMemories.app */;
@@ -174,7 +191,7 @@
 			mainGroup = 200;
 			packageReferences = (
 				700 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
-				701 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+				C0865B7E2F4F0F5200D226A9 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
 			);
 			productRefGroup = 202 /* Products */;
 			projectDirPath = "";
@@ -190,7 +207,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0865B802F4F107700D226A9 /* Secrets.plist in Resources */,
 				013 /* Assets.xcassets in Resources */,
+				C0ED06372F50FA93003B568E /* Products2.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,6 +230,7 @@
 				008 /* PurchaseService.swift in Sources */,
 				009 /* ImportViewModel.swift in Sources */,
 				010 /* MemorySelectionView.swift in Sources */,
+				C0ED06352F50FA40003B568E /* Untitled.swift in Sources */,
 				011 /* DownloadProgressView.swift in Sources */,
 				012 /* PaywallView.swift in Sources */,
 			);
@@ -240,7 +260,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.snapmemories.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nettlelite.snapkeeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -269,7 +289,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.snapmemories.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nettlelite.snapkeeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -423,12 +443,12 @@
 				minimumVersion = 0.9.0;
 			};
 		};
-		701 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+		C0865B7E2F4F0F5200D226A9 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RevenueCat/purchases-ios.git";
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
+				minimumVersion = 5.59.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -439,9 +459,9 @@
 			package = 700 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
 			productName = ZIPFoundation;
 		};
-		601 /* RevenueCat */ = {
+		C0865B822F4F129200D226A9 /* RevenueCat */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 701 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			package = C0865B7E2F4F0F5200D226A9 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
 			productName = RevenueCat;
 		};
 /* End XCSwiftPackageProductDependency section */

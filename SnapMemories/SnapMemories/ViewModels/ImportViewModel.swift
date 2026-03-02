@@ -97,8 +97,9 @@ class ImportViewModel: ObservableObject {
             let jsonURL = try zipService.findMemoriesJSON(in: folder)
             memories = try zipService.parseMemoriesJSON(at: jsonURL)
 
-            // Check if download URLs have expired
-            if downloadService.checkUrlExpiration(memories) {
+            // Check if download URLs have expired (uses network probe as fallback)
+            let expired = await downloadService.checkUrlExpirationAsync(memories)
+            if expired {
                 state = .error("Your Snapchat download links have expired. Please request a new data export from Snapchat and try again.")
                 cleanup()
                 return

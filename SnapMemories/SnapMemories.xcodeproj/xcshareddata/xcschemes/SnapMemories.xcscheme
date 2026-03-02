@@ -51,7 +51,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../SnapMemories/Products.storekit">
+         identifier = "../../Products2.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
