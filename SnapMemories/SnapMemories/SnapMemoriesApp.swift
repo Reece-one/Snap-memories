@@ -8,7 +8,9 @@ struct SnapMemoriesApp: App {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
 
     init() {
+        #if DEBUG
         Purchases.logLevel = .debug
+        #endif
 
         guard let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
               let secrets = NSDictionary(contentsOfFile: path),
@@ -18,15 +20,16 @@ struct SnapMemoriesApp: App {
 
         Purchases.configure(withAPIKey: apiKey)
 
-        // Debug: test if StoreKit can see the product directly
+        #if DEBUG
         Task {
             do {
                 let products = try await Product.products(for: ["com.nettlelite.snapkeeper.unlimited"])
-                print("🛍️ StoreKit found products: \(products.map { $0.id })")
+                print("StoreKit found products: \(products.map { $0.id })")
             } catch {
-                print("🛍️ StoreKit error: \(error)")
+                print("StoreKit error: \(error)")
             }
         }
+        #endif
     }
 
     var body: some Scene {

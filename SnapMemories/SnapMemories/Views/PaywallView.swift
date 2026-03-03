@@ -131,10 +131,14 @@ struct PaywallView: View {
                         // Fine print / legal
                         VStack(spacing: 4) {
                             Link("Terms of Service", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
-                            Link("Privacy Policy", destination: URL(string: "https://www.apple.com/privacy/")!)
+                            Link("Privacy Policy", destination: URL(string: "https://nettlelite.com/snapkeeper/privacy")!)
                         }
                         .font(.system(size: 12))
                         .foregroundStyle(Color(hex: "6B7280").opacity(0.7))
+
+                        Text("Not affiliated with or endorsed by Snap Inc.")
+                            .font(.system(size: 10))
+                            .foregroundStyle(Color(hex: "6B7280").opacity(0.5))
                     }
                     .padding(.bottom, 24)
                 } else {

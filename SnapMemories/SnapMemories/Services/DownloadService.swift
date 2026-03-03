@@ -85,21 +85,29 @@ class DownloadService {
                 var fileExtension = detectFileExtension(from: httpResponse, data: data, isVideo: memory.isVideo)
                 var finalData = data
 
-                print("📥 \(memory.displayDate): Content-Type=\(contentType), detected=\(fileExtension), size=\(data.count) bytes")
+                #if DEBUG
+                print("Download \(memory.displayDate): Content-Type=\(contentType), detected=\(fileExtension), size=\(data.count) bytes")
+                #endif
 
                 // If CDN returned a ZIP (overlay + main bundled), extract the main media file
                 if contentType.contains("zip") || isZipData(data) {
-                    print("📦 ZIP detected for \(memory.displayDate), extracting main media...")
+                    #if DEBUG
+                    print("ZIP detected for \(memory.displayDate), extracting main media...")
+                    #endif
                     if let extracted = await extractMainMediaFromZip(data: data, isVideo: memory.isVideo) {
                         finalData = extracted.data
                         fileExtension = extracted.fileExtension
-                        print("✅ Extracted \(fileExtension) from ZIP, size=\(finalData.count) bytes")
+                        #if DEBUG
+                        print("Extracted \(fileExtension) from ZIP, size=\(finalData.count) bytes")
+                        #endif
                     }
                 }
 
                 // Convert WebP to JPEG since Photos framework rejects raw WebP data
                 if fileExtension == "webp", let converted = convertWebPToJPEG(data: data) {
-                    print("🔄 Converted WebP → JPEG for \(memory.displayDate)")
+                    #if DEBUG
+                    print("Converted WebP to JPEG for \(memory.displayDate)")
+                    #endif
                     finalData = converted
                     fileExtension = "jpg"
                 }
@@ -267,13 +275,17 @@ class DownloadService {
                     if let compositedURL = try await compositeVideoOverlay(videoData: mainData, overlayData: overlayData) {
                         let compositedData = try Data(contentsOf: compositedURL)
                         try? FileManager.default.removeItem(at: compositedURL)
-                        print("🎬 Composited overlay onto video")
+                        #if DEBUG
+                        print("Composited overlay onto video")
+                        #endif
                         return (compositedData, "mp4")
                     }
                 } else {
                     // Composite overlay onto image
                     if let composited = compositeOverlay(mainData: mainData, overlayData: overlayData) {
-                        print("🎨 Composited overlay onto main image")
+                        #if DEBUG
+                        print("Composited overlay onto main image")
+                        #endif
                         return (composited, "jpg")
                     }
                 }
@@ -282,7 +294,9 @@ class DownloadService {
             let ext = detectedExt.isEmpty ? (isVideo ? "mp4" : "jpg") : detectedExt
             return (mainData, ext)
         } catch {
-            print("❌ Failed to extract ZIP: \(error.localizedDescription)")
+            #if DEBUG
+            print("Failed to extract ZIP: \(error.localizedDescription)")
+            #endif
         }
         return nil
     }
@@ -478,10 +492,14 @@ class DownloadService {
         try? FileManager.default.removeItem(at: tempVideoURL)
 
         if result {
-            print("✅ Video overlay composite complete: \(outputURL.lastPathComponent)")
+            #if DEBUG
+            print("Video overlay composite complete: \(outputURL.lastPathComponent)")
+            #endif
             return outputURL
         } else {
-            print("❌ Video export failed: \(writer.error?.localizedDescription ?? "unknown")")
+            #if DEBUG
+            print("Video export failed: \(writer.error?.localizedDescription ?? "unknown")")
+            #endif
             try? FileManager.default.removeItem(at: outputURL)
             return nil
         }

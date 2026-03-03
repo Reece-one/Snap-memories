@@ -48,9 +48,9 @@ struct OnboardingView: View {
                 }
                 .tag(0)
 
-                // MARK: - Page 2: Upload to SnapMemories
+                // MARK: - Page 2: Upload to Snap Keeper
                 VStack(spacing: 24) {
-                    Text("Upload to SnapMemories")
+                    Text("Upload to Snap Keeper")
                         .font(.title.weight(.bold))
 
                     Image("Onboard2")

@@ -22,7 +22,7 @@ struct ContentView: View {
                 // Main content based on state
                 contentView
             }
-            .navigationTitle("SnapMemories")
+            .navigationTitle("Snap Keeper")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     if case .ready = viewModel.state {
@@ -139,7 +139,7 @@ struct IdleView: View {
                 )
             
             VStack(spacing: 12) {
-                Text("Import Snapchat Memories")
+                Text("Import Your Memories")
                     .font(.title2.weight(.semibold))
                 
                 Text("Select your Snapchat data export ZIP file")
@@ -162,7 +162,7 @@ struct IdleView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("How to get your data:")
                     .font(.footnote.weight(.medium))
-                
+
                 Text("1. Go to Snapchat Settings → My Data")
                 Text("2. Request your data export")
                 Text("3. Download the ZIP file from the email")
@@ -174,6 +174,10 @@ struct IdleView: View {
             .background(.ultraThinMaterial)
             .cornerRadius(12)
             .padding(.horizontal)
+
+            Text("Not affiliated with or endorsed by Snap Inc.")
+                .font(.system(size: 10))
+                .foregroundStyle(.secondary.opacity(0.6))
         }
         .padding()
     }
