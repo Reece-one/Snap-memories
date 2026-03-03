@@ -19,6 +19,7 @@
 		010 /* MemorySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110 /* MemorySelectionView.swift */; };
 		011 /* DownloadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111 /* DownloadProgressView.swift */; };
 		012 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112 /* PaywallView.swift */; };
+		015 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114 /* OnboardingView.swift */; };
 		013 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 113 /* Assets.xcassets */; };
 		014 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 600 /* ZIPFoundation */; };
 		C0865B802F4F107700D226A9 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0865B7F2F4F107700D226A9 /* Secrets.plist */; };
@@ -41,6 +42,7 @@
 		110 /* MemorySelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySelectionView.swift; sourceTree = "<group>"; };
 		111 /* DownloadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadProgressView.swift; sourceTree = "<group>"; };
 		112 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		114 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		113 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0865B7D2F4EEDC200D226A9 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = Products.storekit; path = SnapMemories/Products.storekit; sourceTree = "<group>"; };
 		C0865B7F2F4F107700D226A9 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				110 /* MemorySelectionView.swift */,
 				111 /* DownloadProgressView.swift */,
 				112 /* PaywallView.swift */,
+				114 /* OnboardingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				C0ED06352F50FA40003B568E /* Untitled.swift in Sources */,
 				011 /* DownloadProgressView.swift in Sources */,
 				012 /* PaywallView.swift in Sources */,
+				015 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
