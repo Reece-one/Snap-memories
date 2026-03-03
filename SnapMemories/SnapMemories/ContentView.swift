@@ -53,7 +53,15 @@ struct ContentView: View {
                 viewModel.state = .error(error.localizedDescription)
             }
         }
-        .sheet(isPresented: $showPaywall) {
+        .sheet(isPresented: $showPaywall, onDismiss: {
+            // If user purchased and there are pending downloads, resume
+            if purchaseService.hasUnlimitedAccess,
+               case .paywallRequired = viewModel.state {
+                Task {
+                    await viewModel.resumeDownload(purchaseService: purchaseService)
+                }
+            }
+        }) {
             PaywallView()
         }
     }
@@ -88,6 +96,13 @@ struct ContentView: View {
                 failedCount: viewModel.failedCount,
                 skippedCount: viewModel.skippedCount,
                 totalCount: viewModel.selectedCount
+            )
+
+        case .paywallRequired(let downloaded, let remaining):
+            PaywallPromptView(
+                downloaded: downloaded,
+                remaining: remaining,
+                onUnlock: { showPaywall = true }
             )
             
         case .complete(let successful, let failed, let skipped):
@@ -292,6 +307,43 @@ struct CompleteView: View {
             }
             .padding()
         }
+    }
+}
+
+// MARK: - Paywall Prompt View (shown mid-download when limit is hit)
+
+struct PaywallPromptView: View {
+    let downloaded: Int
+    let remaining: Int
+    let onUnlock: () -> Void
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Image(systemName: "pause.circle.fill")
+                .font(.system(size: 70))
+                .foregroundStyle(.yellow)
+
+            Text("Download Paused")
+                .font(.title2.weight(.bold))
+
+            Text("You've saved \(downloaded) memories so far!\nUnlock lifetime access to download the remaining \(remaining).")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+
+            Button(action: onUnlock) {
+                Text("Unlock Lifetime Access")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 18)
+                    .background(Color.yellow)
+                    .cornerRadius(14)
+            }
+            .padding(.horizontal, 32)
+        }
+        .padding()
     }
 }
 

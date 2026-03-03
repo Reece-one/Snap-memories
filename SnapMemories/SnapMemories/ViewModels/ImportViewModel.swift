@@ -140,16 +140,14 @@ class ImportViewModel: ObservableObject {
     
     // MARK: - Download
     
+    /// Tracks where to resume from after paywall purchase
+    private var pendingDownloads: [Memory] = []
+    private var pendingResumeIndex: Int = 0
+
     func downloadSelected(purchaseService: PurchaseService) async {
         let toDownload = selectedMemories
         guard !toDownload.isEmpty else { return }
-        
-        // Check purchase limit
-        if !purchaseService.canDownload(additionalCount: toDownload.count) {
-            // Will be handled by UI showing paywall
-            return
-        }
-        
+
         // Request photos permission
         do {
             try await photosService.requestAuthorization()
@@ -157,37 +155,60 @@ class ImportViewModel: ObservableObject {
             state = .error(error.localizedDescription)
             return
         }
-        
+
         // Reset counters
         successCount = 0
         failedCount = 0
         skippedCount = 0
         downloadProgress = 0
         errors.removeAll()
-        
-        state = .downloading(progress: 0, current: "Starting...")
-        
-        for (index, memory) in toDownload.enumerated() {
+        pendingDownloads = toDownload
+        pendingResumeIndex = 0
+
+        await performDownload(from: 0, memories: toDownload, purchaseService: purchaseService)
+    }
+
+    /// Resume downloading after the user unlocks via paywall
+    func resumeDownload(purchaseService: PurchaseService) async {
+        guard !pendingDownloads.isEmpty else { return }
+        await performDownload(from: pendingResumeIndex, memories: pendingDownloads, purchaseService: purchaseService)
+    }
+
+    private func performDownload(from startIndex: Int, memories: [Memory], purchaseService: PurchaseService) async {
+        let total = memories.count
+        state = .downloading(progress: Double(startIndex) / Double(total), current: "Starting...")
+
+        for index in startIndex..<total {
+            let memory = memories[index]
+
             // Update progress
-            let progress = Double(index) / Double(toDownload.count)
+            let progress = Double(index) / Double(total)
             currentDownloadName = memory.displayDate
             state = .downloading(progress: progress, current: memory.displayDate)
-            
+
             // Skip duplicates
             if duplicateDetector.isDuplicate(memory) {
                 skippedCount += 1
                 continue
             }
-            
+
+            // Check if user has hit the free limit
+            if !purchaseService.canDownload() {
+                let remaining = total - index
+                pendingResumeIndex = index
+                state = .paywallRequired(downloaded: successCount, remaining: remaining)
+                return
+            }
+
             do {
                 // Download media
                 let (data, fileExtension) = try await downloadService.downloadMemory(memory)
-                
+
                 // Save to Photos
                 if memory.isVideo {
                     let tempURL = try downloadService.saveToTemporaryFile(data: data, extension: fileExtension)
                     defer { downloadService.cleanupTemporaryFile(tempURL) }
-                    
+
                     try await photosService.saveVideo(
                         fileURL: tempURL,
                         creationDate: memory.parsedDate,
@@ -201,19 +222,21 @@ class ImportViewModel: ObservableObject {
                         fileExtension: fileExtension
                     )
                 }
-                
+
                 // Mark as downloaded
                 duplicateDetector.markAsDownloaded(memory)
                 purchaseService.recordDownload()
                 successCount += 1
-                
+
             } catch {
                 failedCount += 1
                 errors.append("\(memory.displayDate): \(error.localizedDescription)")
             }
         }
-        
+
         // Complete
+        pendingDownloads = []
+        pendingResumeIndex = 0
         state = .complete(successful: successCount, failed: failedCount, skipped: skippedCount)
         cleanup()
     }

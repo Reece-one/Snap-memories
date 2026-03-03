@@ -108,6 +108,17 @@ struct Memory: Codable, Identifiable, Hashable {
         return CLLocation(latitude: coords.latitude, longitude: coords.longitude)
     }
     
+    /// Whether this entry is an overlay (sid != mid in URL), not the main media file.
+    /// Overlays are WebP sticker/filter layers that Photos can't save directly.
+    var isOverlay: Bool {
+        guard let components = URLComponents(string: mediaDownloadUrl),
+              let sid = components.queryItems?.first(where: { $0.name == "sid" })?.value,
+              let mid = components.queryItems?.first(where: { $0.name == "mid" })?.value else {
+            return false
+        }
+        return sid != mid
+    }
+
     /// Unique hash for duplicate detection
     var uniqueHash: String {
         // Combine date and media URL for unique identification
@@ -145,9 +156,10 @@ enum ImportState: Equatable {
     case parsingJSON
     case ready
     case downloading(progress: Double, current: String)
+    case paywallRequired(downloaded: Int, remaining: Int)
     case complete(successful: Int, failed: Int, skipped: Int)
     case error(String)
-    
+
     static func == (lhs: ImportState, rhs: ImportState) -> Bool {
         switch (lhs, rhs) {
         case (.idle, .idle), (.selectingFile, .selectingFile),
@@ -156,6 +168,8 @@ enum ImportState: Equatable {
             return true
         case let (.downloading(p1, c1), .downloading(p2, c2)):
             return p1 == p2 && c1 == c2
+        case let (.paywallRequired(d1, r1), .paywallRequired(d2, r2)):
+            return d1 == d2 && r1 == r2
         case let (.complete(s1, f1, sk1), .complete(s2, f2, sk2)):
             return s1 == s2 && f1 == f2 && sk1 == sk2
         case let (.error(e1), .error(e2)):

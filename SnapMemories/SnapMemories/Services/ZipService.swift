@@ -84,7 +84,9 @@ class ZipService {
     func parseMemoriesJSON(at url: URL) throws -> [Memory] {
         let data = try Data(contentsOf: url)
         let container = try JSONDecoder().decode(MemoriesContainer.self, from: data)
-        return container.savedMedia
+        // Filter out overlay entries (sid != mid) — these are WebP sticker layers
+        // that Photos framework can't save, causing error 3302
+        return container.savedMedia.filter { !$0.isOverlay }
     }
     
     /// Clean up extracted files

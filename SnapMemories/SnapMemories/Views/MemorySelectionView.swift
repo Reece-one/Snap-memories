@@ -110,12 +110,8 @@ struct MemorySelectionView: View {
             
             // Download button
             Button {
-                if !purchaseService.canDownload(additionalCount: viewModel.selectedCount) {
-                    onShowPaywall()
-                } else {
-                    Task {
-                        await viewModel.downloadSelected(purchaseService: purchaseService)
-                    }
+                Task {
+                    await viewModel.downloadSelected(purchaseService: purchaseService)
                 }
             } label: {
                 HStack {
