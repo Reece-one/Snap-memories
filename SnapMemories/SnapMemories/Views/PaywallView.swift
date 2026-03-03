@@ -64,18 +64,6 @@ struct PaywallView: View {
 
                 Spacer().frame(height: 24)
 
-                // Social proof strip
-                HStack(spacing: 4) {
-                    ForEach(0..<5, id: \.self) { _ in
-                        Image(systemName: "star.fill")
-                            .font(.system(size: 14))
-                            .foregroundStyle(.yellow)
-                    }
-                    Text("Loved by Snapchat users")
-                        .font(.system(size: 14))
-                        .foregroundStyle(Color(hex: "6B7280"))
-                }
-
                 Spacer()
 
                 // Price + CTA section — always above fold
